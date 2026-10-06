@@ -1,11 +1,11 @@
-#' Group markers into linkage groups from two-point RF results (HSMap)
+#' Group markers into linkage groups from two-point RF results (HalfSibMap)
 #'
 #' @description
 #' Clusters markers into **linkage groups (LGs)** using pairwise recombination
-#' fractions from HSMap’s two-point analysis. You can pass either:
+#' fractions from HalfSibMap’s two-point analysis. You can pass either:
 #' - the raw list returned by `"cpp_pairwise_rf()"` (must contain square matrices
 #'   `r` and `lod_r` with matching dimnames), or
-#' - an HSMap two-point wrapper result (class `"HSMap.tpt"`, whose `$fit` field
+#' - a HalfSibMap two-point wrapper result (class `"HSMap.tpt"`, whose `$fit` field
 #'   is that same list).
 #'
 #' The function first symmetrizes and cleans the RF matrix, converts it to a

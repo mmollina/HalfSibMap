@@ -1,8 +1,8 @@
 ---
-title: "Getting started with HSMap"
+title: "Getting started with HalfSibMap"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with HSMap}
+  %\VignetteIndexEntry{Getting started with HalfSibMap}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6, fig.height
 
 ## Overview
 
-HSMap builds a **maternal linkage map** in a **diploid half-sib /
+HalfSibMap builds a **maternal linkage map** in a **diploid half-sib /
 open-pollinated family**: one known, genotyped dam, many offspring, and
 **unknown fathers**. The supported design is exactly this
 one-known-maternal-parent case.
@@ -50,7 +50,7 @@ This vignette walks the full workflow on simulated data:
 7. per-offspring maternal inheritance probabilities.
 
 ```{r}
-library(HSMap)
+library(HalfSibMap)
 RcppParallel::setThreadOptions(numThreads = 2)
 set.seed(2024)
 ```
@@ -81,8 +81,8 @@ Real data is loaded from a pedigree CSV and a genotype CSV with
 the package, so the reader runs without any private files:
 
 ```{r}
-ped  <- system.file("extdata", "example_pedigree.csv",  package = "HSMap")
-geno <- system.file("extdata", "example_genotypes.csv", package = "HSMap")
+ped  <- system.file("extdata", "example_pedigree.csv",  package = "HalfSibMap")
+geno <- system.file("extdata", "example_genotypes.csv", package = "HalfSibMap")
 example_dat <- read_HSMap_data(ped, geno)
 example_dat
 ```

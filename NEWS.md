@@ -1,3 +1,38 @@
+# HalfSibMap 0.2.0.9000
+
+## Package renamed to HalfSibMap
+
+- The package is now called **HalfSibMap** (formerly HSMap): load it with
+  `library(HalfSibMap)`. The compiled library and its registered native routines
+  are renamed accordingly.
+- For compatibility with existing scripts and saved objects, the S3 class names
+  (`HSMap.data`, `HSMap.tpt`, `HSMap.map`, `hsmap_group`, ...), the option keys
+  `HSMap.n_threads` and `HSMap.two_point_optimizer`, and the exported reader
+  `read_HSMap_data()` keep their names.
+
+## Statistical correction: profiled pairwise phase LOD
+
+- `pairwise_rf()` now reports the **profiled** phase LOD. Previously the phase LOD
+  compared coupling and repulsion at the shared recombination-fraction estimate
+  `r_hat`. Because the repulsion table is the coupling table with `r -> 1 - r` and
+  each phase-specific likelihood is concave, the losing phase attains its
+  constrained maximum on `[1e-6, 0.5]` at the no-linkage null, so that comparison
+  overstated phase support by a factor of at least about four. The corrected
+  statistic is the log10 ratio of the winning maximum to the maximum attainable
+  with the dam's phase forced to the alternative and `r` re-optimized. For a **single family** this equals the
+  linkage LOD `lod_r` wherever a phase is called and is assigned from it; for
+  several dams the alternative is maximized explicitly (grid + local refinement)
+  per dam. Phase **calls are unchanged** (the winner is unaffected), as are `r`,
+  `lod_r`, `logLik`, `q_list` and `no_linkage`; the null rule (`r_hat == 0.5` ->
+  phase `NA`, support 0) and the exact-tie rule are retained.
+- `phase_from_pairwise()` is unchanged in code but its edge weights are now the
+  profiled support, so `min_phase_lod` is, for one family, a linkage-LOD
+  threshold. Phase solutions obtained with the previous weights should be
+  recomputed. Documentation updated accordingly.
+- New tests: `test-phase-lod-profiled.R` (identity `P_R(r) = P_C(1 - r)`, equality
+  with `lod_r`, null and tie rules, phase-sign invariance, and multi-dam profiling
+  against an R reference).
+
 # HSMap 0.2.0
 
 Public release aligned with the methodological manuscript (in preparation).

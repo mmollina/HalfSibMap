@@ -85,7 +85,7 @@ test_that("greedy coordinate ascent never decreases the within-component objecti
   for (i in 1:(n - 1)) for (j in (i + 1):n) { J[i, j] <- vals[((k - 1) %% length(vals)) + 1]; J[j, i] <- J[i, j]; k <- k + 1 }
   x0 <- rep(1, n); x0[c(2, 4, 6)] <- -1
   obj0 <- sum(J[upper.tri(J)] * outer(x0, x0)[upper.tri(J)])
-  gr <- HSMap:::.pf_greedy(J, x0, max_passes = 50L, tol = 1e-9)
+  gr <- HalfSibMap:::.pf_greedy(J, x0, max_passes = 50L, tol = 1e-9)
   expect_gte(gr$objective, obj0)                           # never worse than the start
 })
 

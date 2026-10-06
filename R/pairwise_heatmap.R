@@ -1,4 +1,4 @@
-#' Plot recombination or LOD matrix from an HSMap two-point result
+#' Plot recombination or LOD matrix from a HalfSibMap two-point result
 #'
 #' @description
 #' Heatmap of either the recombination fraction matrix (\code{r}) or the LOD

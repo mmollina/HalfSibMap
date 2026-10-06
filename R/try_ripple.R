@@ -1,11 +1,11 @@
 # Local order diagnostics: placement support for one marker (try_marker) and
 # likelihood support for a local order (ripple_map). Both are DIAGNOSTIC: they
-# score candidate orders with the HSMap multipoint likelihood and report what
+# score candidate orders with the HalfSibMap multipoint likelihood and report what
 # they find. Neither searches globally, and neither modifies a map unless the
 # user explicitly asks for it.
 #
 # Inspired by the TRY and RIPPLE commands of MAPMAKER (Lander et al. 1987),
-# reimplemented for the HSMap maternal half-sib model.
+# reimplemented for the HalfSibMap maternal half-sib model.
 
 `%|NA|%` <- function(a, b) if (length(a) && !is.na(a)) a else b
 
@@ -152,7 +152,7 @@
 #' Placement support for a single marker against a fixed local order
 #'
 #' @description
-#' Evaluates where a marker is best supported by the HSMap multipoint
+#' Evaluates where a marker is best supported by the HalfSibMap multipoint
 #' likelihood, given an established local order. The target marker is removed,
 #' the remaining scaffold is held fixed, and the marker is reinserted into
 #' every gap; each placement is refitted from scratch and scored. The
@@ -253,7 +253,7 @@
 #'     recombination have no identifiable relative order; the near-optimal set
 #'     will legitimately contain several positions or permutations.
 #'   \item \strong{Model misspecification.} Likelihoods are computed under the
-#'     HSMap maternal model (paternal alleles independent across markers,
+#'     HalfSibMap maternal model (paternal alleles independent across markers,
 #'     a single global emission-error rate). Where those assumptions fail, the
 #'     ranking can be confidently wrong.
 #'   \item \strong{Genotype error.} A noisy marker can produce a displaced or
@@ -420,7 +420,7 @@ try_marker <- function(x, phased, marker, framework = NULL, window = 21L,
 #' Slides a window along an established order and, for every window position,
 #' evaluates all \code{factorial(window)} permutations of the window's markers
 #' with the markers outside it held fixed. Each candidate order is refitted from
-#' scratch and scored by the HSMap multipoint likelihood, so orders are compared
+#' scratch and scored by the HalfSibMap multipoint likelihood, so orders are compared
 #' honestly rather than through recombination fractions that are only valid for
 #' the baseline.
 #'
@@ -494,7 +494,7 @@ try_marker <- function(x, phased, marker, framework = NULL, window = 21L,
 #'     recombination have no identifiable relative order; the near-optimal set
 #'     will legitimately contain several positions or permutations.
 #'   \item \strong{Model misspecification.} Likelihoods are computed under the
-#'     HSMap maternal model (paternal alleles independent across markers,
+#'     HalfSibMap maternal model (paternal alleles independent across markers,
 #'     a single global emission-error rate). Where those assumptions fail, the
 #'     ranking can be confidently wrong.
 #'   \item \strong{Genotype error.} A noisy marker can produce a displaced or

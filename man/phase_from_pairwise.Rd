@@ -2,7 +2,7 @@
 % Please edit documentation in R/phasing_core.R
 \name{phase_from_pairwise}
 \alias{phase_from_pairwise}
-\title{Phase from pairwise for one or more dams (HSMap)}
+\title{Phase from pairwise for one or more dams (HalfSibMap)}
 \usage{
 phase_from_pairwise(
   tpt,
@@ -29,8 +29,9 @@ Markers absent for a dam are dropped with a warning.}
 \item{dam}{Which dam(s): a dam name/index, a vector of them, or \code{"all"}
 (default).}
 
-\item{min_phase_lod}{Minimum phase LOD for an edge to be treated as supported
-(default \code{0}). Even at the default, edges with zero/near-zero evidence are
+\item{min_phase_lod}{Minimum profiled phase LOD for an edge to be treated as
+supported (default \code{0}); for a single family this is a linkage-LOD
+threshold. Even at the default, edges with zero/near-zero evidence are
 excluded (see \code{tie_tol}); an edge counts only when its LOD strictly exceeds
 \code{max(min_phase_lod, tie_tol)}. \strong{The default \code{0} is a backward-
 compatibility choice, not a statistically validated threshold}; a suitable value
@@ -77,6 +78,9 @@ resolved from unresolved phase.
 The signed, LOD-weighted phase graph is built \strong{separately for each dam} from
 that dam's own \code{lod_ph_list[[d]]} (not the pooled \code{lod_ph}). Only edges with an
 available phase sign, finite LOD, and LOD above the support threshold are used.
+The edge weight is the \strong{profiled} phase LOD of \code{\link{pairwise_rf}}; for
+a single family it equals the pairwise linkage LOD, so \code{min_phase_lod} is
+then a threshold on the linkage evidence of an edge.
 The graph is split into connected components; within each component a spectral
 initialization and greedy coordinate ascent orient the markers (a heuristic, not
 guaranteed globally optimal). The relative orientation of different components is

@@ -11,7 +11,7 @@ test_that("returned logLik matches an independent likelihood call at final param
     m <- hmm_map(d$dat, phased = d$oph, dam = 1, epsilon = 0.01,
                  paternal_mode = "HWE", lambda = lam, tol = 1e-7, maxit = 3000)
     q <- as.numeric(m$fit$q)
-    ll <- HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(m$fit$r), hwe_cols(q), 0.01)
+    ll <- HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(m$fit$r), hwe_cols(q), 0.01)
     expect_equal(m$fit$logLik, ll, tolerance = 1e-6)
   }
 })

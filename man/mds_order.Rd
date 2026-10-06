@@ -2,7 +2,7 @@
 % Please edit documentation in R/mds_core.R
 \name{mds_order}
 \alias{mds_order}
-\title{1D MDS ordering of markers (HSMap), per group or for a given set of markers}
+\title{1D MDS ordering of markers (HalfSibMap), per group or for a given set of markers}
 \usage{
 mds_order(
   x,

@@ -1,4 +1,4 @@
-#' Render HSMap maps with LinkageMapView (publication-quality PDF)
+#' Render HalfSibMap maps with LinkageMapView (publication-quality PDF)
 #'
 #' @description
 #' Bridge from fitted \code{HSMap.map} objects to

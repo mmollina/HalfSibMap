@@ -435,7 +435,7 @@ hmm_map_source_aware <- function(x, phased, dam = 1,
 
 #' @export
 print.HSMap.sourceaware <- function(x, ...) {
-  cat("HSMap source-aware maternal map\n")
+  cat("HalfSibMap source-aware maternal map\n")
   cat(sprintf("  markers   : %d\n", length(x$markers)))
   cat(sprintf("  length    : %.1f cM (Haldane)\n",
               sum(x$dist, na.rm = TRUE)))

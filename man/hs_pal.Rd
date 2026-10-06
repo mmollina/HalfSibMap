@@ -2,7 +2,7 @@
 % Please edit documentation in R/general_utils.R
 \name{hs_pal}
 \alias{hs_pal}
-\title{Palette for HSMap dendrograms}
+\title{Palette for HalfSibMap dendrograms}
 \usage{
 hs_pal(n)
 }
@@ -13,5 +13,5 @@ hs_pal(n)
 Character vector of length \code{n} with hex colors
 }
 \description{
-Palette for HSMap dendrograms
+Palette for HalfSibMap dendrograms
 }

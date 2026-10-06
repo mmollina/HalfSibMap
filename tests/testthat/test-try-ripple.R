@@ -24,8 +24,8 @@ sim_chr <- function(seed, Tm = 24L, n = 300L, r = 0.08, err = 0.01, miss = 0) {
 
 ## Rebuild an HSMap.phased for a permuted order, carrying phase correctly.
 reorder_phased <- function(oph, new_order) {
-  h <- HSMap:::.hsmap_marker_phase(oph$order, oph$phase_vec)
-  oracle_phased(new_order, HSMap:::.hsmap_phase_for(new_order, h), oph$dam)
+  h <- HalfSibMap:::.hsmap_marker_phase(oph$order, oph$phase_vec)
+  oracle_phased(new_order, HalfSibMap:::.hsmap_phase_for(new_order, h), oph$dam)
 }
 
 # ---------------------------------------------------------------------------
@@ -33,14 +33,14 @@ reorder_phased <- function(oph, new_order) {
 # ---------------------------------------------------------------------------
 test_that("marker-level phase reconstruction round-trips exactly", {
   s <- sim_chr(101L, Tm = 20L, n = 120L)
-  h <- HSMap:::.hsmap_marker_phase(s$oph$order, s$oph$phase_vec)
-  expect_identical(HSMap:::.hsmap_phase_for(s$oph$order, h),
+  h <- HalfSibMap:::.hsmap_marker_phase(s$oph$order, s$oph$phase_vec)
+  expect_identical(HalfSibMap:::.hsmap_phase_for(s$oph$order, h),
                    as.integer(s$oph$phase_vec))
   ## a permutation gets its own phase, and restoring the order restores it
   perm <- s$oph$order[c(1:4, 6L, 5L, 7:20)]
-  pv_perm <- HSMap:::.hsmap_phase_for(perm, h)
+  pv_perm <- HalfSibMap:::.hsmap_phase_for(perm, h)
   expect_length(pv_perm, length(perm) - 1L)
-  expect_identical(HSMap:::.hsmap_phase_for(s$oph$order, h),
+  expect_identical(HalfSibMap:::.hsmap_phase_for(s$oph$order, h),
                    as.integer(s$oph$phase_vec))
   ## Swapping two markers changes the interval phase only when their marker
   ## states differ: if h[i] == h[j] the swap is phase-invariant, which is
@@ -48,7 +48,7 @@ test_that("marker-level phase reconstruction round-trips exactly", {
   j <- which(h[-1L] != h[-length(h)])[1L]      # h[j] != h[j+1]
   perm2 <- s$oph$order
   perm2[c(j, j + 1L)] <- perm2[c(j + 1L, j)]
-  expect_false(identical(HSMap:::.hsmap_phase_for(perm2, h),
+  expect_false(identical(HalfSibMap:::.hsmap_phase_for(perm2, h),
                          as.integer(s$oph$phase_vec)))
 })
 
@@ -123,9 +123,9 @@ test_that("try_marker reports no credible internal placement for an unlinked mar
   dat2 <- structure(list(G_list = list(P1 = G2), M_list = list(P1 = M2)),
                     class = "HSMap.data")
   ord <- append(s$mk, "UNLINKED", after = 10L)
-  h <- HSMap:::.hsmap_marker_phase(s$oph$order, s$oph$phase_vec)
+  h <- HalfSibMap:::.hsmap_marker_phase(s$oph$order, s$oph$phase_vec)
   h["UNLINKED"] <- 1L
-  ph <- oracle_phased(ord, HSMap:::.hsmap_phase_for(ord, h), "P1")
+  ph <- oracle_phased(ord, HalfSibMap:::.hsmap_phase_for(ord, h), "P1")
   tr <- try_marker(dat2, ph, marker = "UNLINKED", window = 13L,
                    lambda = LAM, epsilon = 0.01)
   ## Empirical signature (measured, not assumed): an unlinked marker is

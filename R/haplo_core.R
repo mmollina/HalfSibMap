@@ -1,4 +1,4 @@
-#' Per-child haplotype posteriors (gamma) from an HSMap map
+#' Per-child haplotype posteriors (gamma) from a HalfSibMap map
 #'
 #' This wrapper builds inputs for \code{gamma_cpp()} from an \code{HSMap.data}
 #' object and a map returned by \code{hmm_map()}. It supports both single-

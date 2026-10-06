@@ -3,7 +3,7 @@
 #   * grid + bounded local refinement (multimodal-safe),
 #   * default threads = NULL, tol/maxit honored, deterministic, deprecations warn.
 
-.pwo <- function(G, M, ...) HSMap:::pairwise_rf_estimation_multi_parallel_cpp(G, M, ...)
+.pwo <- function(G, M, ...) HalfSibMap:::pairwise_rf_estimation_multi_parallel_cpp(G, M, ...)
 .cs  <- function(p, m) if (m == 0) c(1 - p, p, 0) else c(0, 1 - p, p)
 .j33 <- function(phase, r, qi, qj) {
   P <- matrix(0, 3, 3)

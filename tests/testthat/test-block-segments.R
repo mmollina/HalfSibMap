@@ -5,7 +5,7 @@
   f  <- structure(list(order = mk, fit = list(r = c(0.05, r_mid, 0.05))), class = "HSMap.map")
   blocks <- list(list(block = 1, markers = mk, contributing_dams = "A", fit = f))
   block_id <- c(1L, 1L, 1L, 1L); pv <- c(1L, 1L, 1L)   # one fully resolved phase block
-  itab <- HSMap:::.block_interval_table(mk, pv, block_id, blocks, gap_r = gap_r,
+  itab <- HalfSibMap:::.block_interval_table(mk, pv, block_id, blocks, gap_r = gap_r,
                                         boundary_status = "unresolved_phase")
   structure(list(blocks = blocks, block_id = stats::setNames(block_id, mk),
                  unresolved_boundaries = integer(0), n_blocks = 1L, order = mk,

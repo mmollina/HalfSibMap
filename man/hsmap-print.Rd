@@ -10,7 +10,7 @@
 \alias{print.HSMap.gamma}
 \alias{print.HSMap.try}
 \alias{print.HSMap.ripple}
-\title{Print methods for HSMap result objects}
+\title{Print methods for HalfSibMap result objects}
 \usage{
 \method{print}{HSMap.tpt}(x, ...)
 
@@ -29,7 +29,7 @@
 \method{print}{HSMap.ripple}(x, ...)
 }
 \arguments{
-\item{x}{An HSMap result object.}
+\item{x}{A HalfSibMap result object.}
 
 \item{...}{Ignored.}
 }
@@ -37,7 +37,7 @@
 \code{x}, invisibly.
 }
 \description{
-Concise one-screen summaries for the primary HSMap result classes
+Concise one-screen summaries for the primary HalfSibMap result classes
 (two-point results, phase objects, single-dam and blockwise maps, and
 per-offspring haplotype posteriors).
 }

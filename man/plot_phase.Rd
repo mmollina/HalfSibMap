@@ -2,7 +2,7 @@
 % Please edit documentation in R/phasing_plot.R
 \name{plot_phase}
 \alias{plot_phase}
-\title{Tile plot of adjacent phase by dam (HSMap)}
+\title{Tile plot of adjacent phase by dam (HalfSibMap)}
 \usage{
 plot_phase(
   phased,

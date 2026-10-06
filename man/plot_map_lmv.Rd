@@ -2,7 +2,7 @@
 % Please edit documentation in R/map_lmv.R
 \name{plot_map_lmv}
 \alias{plot_map_lmv}
-\title{Render HSMap maps with LinkageMapView (publication-quality PDF)}
+\title{Render HalfSibMap maps with LinkageMapView (publication-quality PDF)}
 \usage{
 plot_map_lmv(
   x,

@@ -4,8 +4,8 @@
 test_that("the full open-pollinated README workflow runs on the example data", {
   RcppParallel::setThreadOptions(numThreads = 1L)
 
-  ped  <- system.file("extdata", "example_pedigree.csv",  package = "HSMap")
-  geno <- system.file("extdata", "example_genotypes.csv", package = "HSMap")
+  ped  <- system.file("extdata", "example_pedigree.csv",  package = "HalfSibMap")
+  geno <- system.file("extdata", "example_genotypes.csv", package = "HalfSibMap")
   expect_true(nzchar(ped) && nzchar(geno))
 
   # 1. read pedigree + genotype files

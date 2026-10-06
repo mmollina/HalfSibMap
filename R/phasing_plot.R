@@ -1,4 +1,4 @@
-#' Tile plot of adjacent phase by dam (HSMap)
+#' Tile plot of adjacent phase by dam (HalfSibMap)
 #'
 #' @description
 #' Visualize adjacent phases (coupling vs repulsion) along a marker order for

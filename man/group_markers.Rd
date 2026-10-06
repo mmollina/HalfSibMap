@@ -2,7 +2,7 @@
 % Please edit documentation in R/group_core.R
 \name{group_markers}
 \alias{group_markers}
-\title{Group markers into linkage groups from two-point RF results (HSMap)}
+\title{Group markers into linkage groups from two-point RF results (HalfSibMap)}
 \usage{
 group_markers(
   w,
@@ -64,11 +64,11 @@ An object of class \code{"hsmap_group"} with fields:
 }
 \description{
 Clusters markers into \strong{linkage groups (LGs)} using pairwise recombination
-fractions from HSMap’s two-point analysis. You can pass either:
+fractions from HalfSibMap’s two-point analysis. You can pass either:
 \itemize{
 \item the raw list returned by \code{"cpp_pairwise_rf()"} (must contain square matrices
 \code{r} and \code{lod_r} with matching dimnames), or
-\item an HSMap two-point wrapper result (class \code{"HSMap.tpt"}, whose \verb{$fit} field
+\item a HalfSibMap two-point wrapper result (class \code{"HSMap.tpt"}, whose \verb{$fit} field
 is that same list).
 }
 

@@ -1,4 +1,4 @@
-#' 1D MDS ordering of markers (HSMap), per group or for a given set of markers
+#' 1D MDS ordering of markers (HalfSibMap), per group or for a given set of markers
 #'
 #' @description
 #' Runs a 2D metric MDS (SMACOF) on a transformed RF distance, then fits a

@@ -20,9 +20,9 @@ test_that("emissions/likelihood depend on pi only through q = piAA + 0.5*piAa", 
   phase <- rep(1L, Tm - 1); r <- rep(0.08, Tm - 1)
   mk_pi <- function(a, b, c) matrix(c(a, b, c), nrow = 3, ncol = Tm)
 
-  llA <- HSMap:::loglik_hs_cpp(G, M, phase, r, mk_pi(0.25, 0.50, 0.25), 1e-3)  # q = 0.50
-  llB <- HSMap:::loglik_hs_cpp(G, M, phase, r, mk_pi(0.50, 0.00, 0.50), 1e-3)  # q = 0.50
-  llC <- HSMap:::loglik_hs_cpp(G, M, phase, r, mk_pi(0.36, 0.48, 0.16), 1e-3)  # q = 0.60
+  llA <- HalfSibMap:::loglik_hs_cpp(G, M, phase, r, mk_pi(0.25, 0.50, 0.25), 1e-3)  # q = 0.50
+  llB <- HalfSibMap:::loglik_hs_cpp(G, M, phase, r, mk_pi(0.50, 0.00, 0.50), 1e-3)  # q = 0.50
+  llC <- HalfSibMap:::loglik_hs_cpp(G, M, phase, r, mk_pi(0.36, 0.48, 0.16), 1e-3)  # q = 0.60
 
   expect_equal(llA, llB, tolerance = 1e-9)   # same q  -> identical likelihood
   expect_gt(abs(llA - llC), 1e-6)            # different q -> different likelihood
@@ -302,7 +302,7 @@ test_that("alpha = beta = 0 reproduces the unpenalized engine update", {
   M <- as.integer(dat$M_list[[1]][mk]); ph <- as.integer(1L - sim$truth$v_true[[1]])
   m0 <- hmm_map(dat, phased = oph, dam = 1, epsilon = 0.01, paternal_mode = "gametic",
                 q_prior_in = list(alpha = 0, beta = 0), r_start = 0.05, tol = 1e-7, maxit = 1000)
-  eng <- HSMap:::hmm_hs_cpp_parallel(G, M, ph, r_start = 0.05, pi_mode = "HWE",
+  eng <- HalfSibMap:::hmm_hs_cpp_parallel(G, M, ph, r_start = 0.05, pi_mode = "HWE",
              pi_prior_in = NULL, lambda = 0, epsilon = 0.01, tol = 1e-7, maxit = 1000,
              paternal_mode = "HWE")
   expect_equal(as.numeric(m0$fit$r), as.numeric(eng$r), tolerance = 1e-8)

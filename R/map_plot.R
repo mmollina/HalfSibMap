@@ -1,4 +1,4 @@
-#' Plot one or more HSMap maps as linkage-group tracks
+#' Plot one or more HalfSibMap maps as linkage-group tracks
 #'
 #' Plot a single `HSMap.map` or a list of `HSMap.map` objects as simple tracks.
 #' Each track is a rounded rectangle representing the linkage group with small

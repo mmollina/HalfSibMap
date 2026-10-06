@@ -1,4 +1,4 @@
-#' Palette for HSMap dendrograms
+#' Palette for HalfSibMap dendrograms
 #' @param n Positive integer number of groups
 #' @return Character vector of length `n` with hex colors
 #' @importFrom grDevices colorRampPalette

@@ -1,7 +1,7 @@
-Package: HSMap
+Package: HalfSibMap
 Type: Package
 Title: Maternal Linkage Mapping in Open-Pollinated Diploid Families
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R: c(
     person("Marcelo", "Mollinari", email = "mmollina@gmail.com",
            role = c("aut", "cre")),
@@ -26,8 +26,8 @@ Description: Builds maternal linkage maps in open-pollinated (unknown-sire) dipl
              shared map (via a joint EM) and that handle known-sire full-sib crosses
              are included and documented as forthcoming.
 License: MIT + file LICENSE
-URL: https://github.com/mmollina/HSMap
-BugReports: https://github.com/mmollina/HSMap/issues
+URL: https://github.com/mmollina/HalfSibMap
+BugReports: https://github.com/mmollina/HalfSibMap/issues
 LazyData: TRUE
 LazyDataCompression: xz
 Depends:

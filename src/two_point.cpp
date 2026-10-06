@@ -308,8 +308,11 @@ static inline TpPairOpt tp_optimize_pair_newton(const int C[3][3],
 //    LOD; they can still affect both INDIRECTLY through their contribution to the
 //    plug-in estimate of q (computed before the r/phase optimization).
 //  * Phase evidence is returned per dam (lod_ph_list, mom_phase_list); the pooled
-//    lod_ph is the elementwise sum. An exact coupling-vs-repulsion tie yields
-//    phase NA and phase-LOD 0 for that dam.
+//    lod_ph is the elementwise sum. The per-dam phase LOD is the PROFILED
+//    log10 likelihood ratio (winning maximum vs the maximum with that dam's
+//    phase forced to the alternative and r re-optimized); for a single dam it
+//    equals lod_r exactly. An exact coupling-vs-repulsion tie yields phase NA
+//    and phase-LOD 0 for that dam.
 // The recombination-fraction optimizer (golden_max over sum_g max phase LL) and
 // the two-marker likelihood kernel are unchanged.
 // -----------------------------------------------------------------------------
@@ -328,7 +331,7 @@ struct PairwiseWorker : public RcppParallel::Worker {
   // outputs (write through)
   RMatrix<double> R;      // [Tm x Tm] pairwise r-hat
   RMatrix<double> LODR;   // [Tm x Tm] LOD vs r=0.5 (raw; may be tiny-negative)
-  RMatrix<double> LODPH;  // [Tm x Tm] phase LOD at r-hat (sum over dams)
+  RMatrix<double> LODPH;  // [Tm x Tm] profiled phase LOD (sum over dams)
   RMatrix<double> LL;     // [Tm x Tm] log-likelihood at r-hat
   RMatrix<int>    NOLINK; // [Tm x Tm] 1 if r-hat is at the 0.5 boundary
   std::vector<RMatrix<int>>    momPhase;  // per-dam phase calls (C=1, R=0, NA)
@@ -510,8 +513,31 @@ struct PairwiseWorker : public RcppParallel::Worker {
           lodPhList[g](i,j) = lodPhList[g](j,i) = 0.0;
         }
 
-        // Per-dam phase LOD and phase call at r_hat, from THAT dam's likelihood
-        // only. Partial terms cancel in (llC - llR), so use complete counts.
+        // Per-dam phase call at r_hat and PROFILED per-dam phase support.
+        //
+        // Phase call: from THAT dam's likelihood at the shared r_hat (partial
+        // terms cancel in llC - llR, so complete counts suffice). At the pooled
+        // optimum every dam sits at its own preferred phase, so this is the
+        // phase configuration of the maximum.
+        //
+        // Phase support: the PROFILED log10 likelihood ratio, i.e. the winning
+        // maximum against the maximum attainable with THIS dam's phase forced to
+        // the alternative and r (and every other dam's phase) re-optimized. It
+        // is NOT the ratio of the two phases at the shared r_hat, which bounds
+        // the profiled ratio from above (by a factor >= ~4 near the null and
+        // without bound under tight linkage).
+        //
+        // Single dam: P^R(r) = P^C(1 - r) cell by cell and each phase-specific
+        // log-likelihood is concave on (0, 1), so whenever the winner has
+        // r_hat < 0.5 the losing phase's constrained maximum on [1e-6, 0.5] sits
+        // at r = 0.5, the no-linkage null. The profiled phase support therefore
+        // EQUALS the linkage LOD, and it is assigned from it directly rather
+        // than re-optimized (submission_notes/M02_phase_lod_audit.md: identity
+        // verified to 1e-13 on 34,364 production pairs).
+        //
+        // Several dams: the pooled objective is a sum of per-dam phase maxima,
+        // the decomposition does not hold, and the alternative is maximized
+        // explicitly with the grid + local-refinement search.
         //
         // At EXACTLY r_hat = 0.5, coupling and repulsion are THEORETICALLY
         // identical (P^C(0.5) = P^R(0.5) = (A+B)/4), so no phase is
@@ -522,26 +548,48 @@ struct PairwiseWorker : public RcppParallel::Worker {
         if (r_hat == 0.5) {
           LODPH(i,j) = LODPH(j,i) = 0.0;
         } else {
-          double lod_ph_sum = 0.0;
+          // (a) per-dam phase calls at r_hat
+          std::vector<int> call(Gp, NA_INTEGER);
           for (int g=0; g<Gp; ++g) {
             if (!dams[g].is_dhet) continue;
-
             double PC[3][3], PR[3][3];
             joint_child_probs_3x3(0, r_hat, dams[g].q_i, dams[g].q_j, PC);
             joint_child_probs_3x3(1, r_hat, dams[g].q_i, dams[g].q_j, PR);
-
             const double llC = ll_3x3(dams[g].C, PC, tiny);
             const double llR = ll_3x3(dams[g].C, PR, tiny);
-
-            double lod; int phase;
-            if (llC == llR) {            // exact tie (incl. no complete data)
-              lod = 0.0; phase = NA_INTEGER;
+            if (llC != llR) call[g] = (llC > llR) ? 1 : 0;   // tie -> NA
+          }
+          // (b) profiled support per called dam
+          double lod_ph_sum = 0.0;
+          for (int g=0; g<Gp; ++g) {
+            if (call[g] == NA_INTEGER) continue;         // non-dhet or tie: NA / 0
+            double lod;
+            if (Gp == 1) {
+              lod = (lod_r > 0.0) ? lod_r : 0.0;           // exact identity (see above)
             } else {
-              lod   = std::fabs(llC - llR) / LOG10;
-              phase = (llC > llR) ? 1 : 0;   // C=1, R=0
+              const int gfix = g;
+              const int alt  = 1 - call[g];                // forced alternative phase
+              auto obj_alt = [&](double r)->double {
+                r = clamp(r, 1e-6, 0.5);
+                double total = 0.0;
+                for (int h=0; h<Gp; ++h) {
+                  if (!dams[h].is_dhet) continue;
+                  double PC[3][3], PR[3][3];
+                  joint_child_probs_3x3(0, r, dams[h].q_i, dams[h].q_j, PC);
+                  joint_child_probs_3x3(1, r, dams[h].q_i, dams[h].q_j, PR);
+                  const double llC = ll_3x3(dams[h].C, PC, tiny) + dams[h].ll_partial;
+                  const double llR = ll_3x3(dams[h].C, PR, tiny) + dams[h].ll_partial;
+                  if (h == gfix) total += (alt == 1) ? llC : llR;
+                  else           total += (llC >= llR ? llC : llR);
+                }
+                return total;
+              };
+              const PairOpt pa = grid_refine_max(obj_alt, 1e-6, 0.5, PAIRWISE_NGRID, tol, maxit);
+              lod = (ll_hat - pa.f_hat) / LOG10;
+              if (lod < 0.0) lod = 0.0;                    // optimizer noise only
             }
             lodPhList[g](i,j) = lodPhList[g](j,i) = lod;
-            momPhase[g](i,j)  = momPhase[g](j,i)  = phase;
+            momPhase[g](i,j)  = momPhase[g](j,i)  = call[g];
             lod_ph_sum += lod;
           }
           LODPH(i,j) = LODPH(j,i) = lod_ph_sum; // pooled = sum of per-dam LODs
@@ -871,9 +919,10 @@ static inline double tp_ll_partial(const int niO[3], const int njO[3],
   return ll;
 }
 
-// Shared per-pair post-processing, mirroring PairwiseWorker lines exactly:
-// lod_r vs the null at exactly 0.5 (partials cancel), phase call and phase LOD
-// at the SHARED r_hat from complete counts only, no_linkage within 1e-6 of 0.5.
+// Shared per-pair post-processing, mirroring PairwiseWorker (single dam)
+// exactly: lod_r vs the null at exactly 0.5 (partials cancel), phase call at
+// r_hat from complete counts only, profiled phase LOD (= lod_r for one dam),
+// no_linkage within 1e-6 of 0.5.
 static inline Rcpp::List tp_pair_report(const int C[3][3], double ll_partial,
                                         double q_i, double q_j,
                                         double r_hat, double tiny,
@@ -894,14 +943,17 @@ static inline Rcpp::List tp_pair_report(const int C[3][3], double ll_partial,
   const double ll_half = ll_3x3(C, PH, tiny) + ll_partial;
   const double lod_r   = (ll_hat - ll_half) / LOG10;
 
-  // phase call + phase LOD at r_hat, complete counts only (partials cancel).
-  // At exactly r_hat = 0.5 the two phases are theoretically identical, so no
-  // phase is identifiable: NA / 0 explicitly (same rule as the production
-  // worker), never an FP-noise call.
+  // phase call at r_hat, complete counts only (partials cancel), and the
+  // PROFILED phase support. For one dam the losing phase's constrained maximum
+  // is the null at r = 0.5 (P^R(r) = P^C(1 - r), concave per phase), so the
+  // profiled phase LOD equals lod_r and is assigned from it (same rule as the
+  // production worker). At exactly r_hat = 0.5 the two phases are
+  // theoretically identical, so no phase is identifiable: NA / 0 explicitly,
+  // never an FP-noise call.
   double lod_ph; int phase;
   if (r_hat == 0.5 || llC_hat == llR_hat) { lod_ph = 0.0; phase = NA_INTEGER; }
   else {
-    lod_ph = std::fabs(llC_hat - llR_hat) / LOG10;
+    lod_ph = (lod_r > 0.0) ? lod_r : 0.0;
     phase  = (llC_hat > llR_hat) ? 1 : 0;
   }
 

@@ -12,7 +12,7 @@
                  list(block = 2, markers = mk[4:6], contributing_dams = "A", fit = f2))
   block_id <- c(1L, 1L, 1L, 2L, 2L, 2L)
   pv <- c(1L, 1L, NA_integer_, 1L, 1L)                 # interval 3 is the block boundary
-  itab <- HSMap:::.block_interval_table(mk, pv, block_id, blocks, gap_r = gap_r,
+  itab <- HalfSibMap:::.block_interval_table(mk, pv, block_id, blocks, gap_r = gap_r,
                                         boundary_status = "unresolved_phase")
   structure(list(blocks = blocks, block_id = stats::setNames(block_id, mk),
                  unresolved_boundaries = 3L, n_blocks = 2L, order = mk,

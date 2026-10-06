@@ -69,8 +69,8 @@
 ## ---- run both cpp harnesses on one scenario and compare ---------------------
 .tp_cmp <- function(C3, niO = integer(3), njO = integer(3), q_i, q_j,
                     check_ref = TRUE, label = "case") {
-  g <- HSMap:::two_point_pair_grid_cpp(C3, niO, njO, q_i, q_j)
-  n <- HSMap:::two_point_pair_newton_cpp(C3, niO, njO, q_i, q_j)
+  g <- HalfSibMap:::two_point_pair_grid_cpp(C3, niO, njO, q_i, q_j)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(C3, niO, njO, q_i, q_j)
 
   ## the new optimizer must never be meaningfully worse than the grid
   expect_gte(n$logLik, g$logLik - 1e-9, label = paste(label, "ll not worse"))
@@ -111,8 +111,8 @@ test_that("newton vs grid: engineered scenarios agree (adjudicated by reference)
   ## 2. optimum at the lower bound: pure non-recombinant coupling counts
   C3 <- matrix(0L, 3, 3); diag(C3) <- c(50L, 100L, 50L)
   d <- .tp_cmp(C3, q_i = 0.5, q_j = 0.5, label = "at-lo")
-  g <- HSMap:::two_point_pair_grid_cpp(C3, integer(3), integer(3), 0.5, 0.5)
-  n <- HSMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
+  g <- HalfSibMap:::two_point_pair_grid_cpp(C3, integer(3), integer(3), 0.5, 0.5)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
   expect_identical(n$r_hat, 1e-6)          # exact boundary return
   expect_identical(g$r_hat, 1e-6)          # grid keeps its first grid point
   diffs$at_lo <- d
@@ -120,7 +120,7 @@ test_that("newton vs grid: engineered scenarios agree (adjudicated by reference)
   ## 3. optimum at EXACTLY 0.5 with an exact phase tie (balanced classes, q=0.5)
   C3 <- matrix(0L, 3, 3); C3[1, 1] <- 25L; C3[3, 3] <- 25L; C3[1, 3] <- 25L; C3[3, 1] <- 25L
   d <- .tp_cmp(C3, q_i = 0.5, q_j = 0.5, label = "at-half-tie")
-  n <- HSMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
   expect_identical(n$r_hat, 0.5)
   expect_identical(n$no_linkage, 1L)
   expect_true(is.na(n$phase))              # phases coincide at 0.5 -> tie -> NA
@@ -132,7 +132,7 @@ test_that("newton vs grid: engineered scenarios agree (adjudicated by reference)
   ##    phase = repulsion (0)
   C3 <- matrix(0L, 3, 3); C3[1, 3] <- 40L; C3[3, 1] <- 40L
   d <- .tp_cmp(C3, q_i = 0.5, q_j = 0.5, label = "no-recomb-repulsion")
-  n <- HSMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
   expect_identical(n$r_hat, 1e-6)
   expect_identical(n$phase, 0L)
   diffs$norec <- d
@@ -144,8 +144,8 @@ test_that("newton vs grid: engineered scenarios agree (adjudicated by reference)
   ## Newton path deterministically returns the lower bound. Comparable r values
   ## are therefore NOT required here -- equal likelihood and consistent calls are.
   C3 <- matrix(0L, 3, 3); C3[2, 2] <- 200L
-  g <- HSMap:::two_point_pair_grid_cpp(C3, integer(3), integer(3), 0.5, 0.5)
-  n <- HSMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
+  g <- HalfSibMap:::two_point_pair_grid_cpp(C3, integer(3), integer(3), 0.5, 0.5)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(C3, integer(3), integer(3), 0.5, 0.5)
   expect_identical(n$r_hat, 1e-6)          # deterministic convention (lower bound)
   expect_lt(abs(n$logLik - g$logLik), 1e-9)  # same (constant) likelihood anywhere
   expect_lt(abs(n$lod_r), 1e-12)           # FP-ulp noise only, exactly like the
@@ -156,11 +156,11 @@ test_that("newton vs grid: engineered scenarios agree (adjudicated by reference)
   ## 6/7. coupling strongly preferred / repulsion strongly preferred
   s <- .tp_sim_counts(400, 0.05, "C", 0.4, 0.6, seed = 12)
   diffs$coupC <- .tp_cmp(s$C3, s$niO, s$njO, 0.4, 0.6, label = "coupling-strong")
-  n <- HSMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, 0.4, 0.6)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, 0.4, 0.6)
   expect_identical(n$phase, 1L)
   s <- .tp_sim_counts(400, 0.05, "R", 0.4, 0.6, seed = 13)
   diffs$coupR <- .tp_cmp(s$C3, s$niO, s$njO, 0.4, 0.6, label = "repulsion-strong")
-  n <- HSMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, 0.4, 0.6)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, 0.4, 0.6)
   expect_identical(n$phase, 0L)
 
   ## 8. near-0.5 from data simulated at r = 0.5
@@ -180,8 +180,8 @@ test_that("newton vs grid: engineered scenarios agree (adjudicated by reference)
   ## 12. missing observations: partials present; they must not move the optimum
   s <- .tp_sim_counts(300, 0.12, "C", 0.4, 0.4, miss = 0.3, seed = 18)
   diffs$missing <- .tp_cmp(s$C3, s$niO, s$njO, 0.4, 0.4, label = "missing-30pc")
-  n_part <- HSMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, 0.4, 0.4)
-  n_none <- HSMap:::two_point_pair_newton_cpp(s$C3, integer(3), integer(3), 0.4, 0.4)
+  n_part <- HalfSibMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, 0.4, 0.4)
+  n_none <- HalfSibMap:::two_point_pair_newton_cpp(s$C3, integer(3), integer(3), 0.4, 0.4)
   expect_identical(n_part$r_hat, n_none$r_hat)                 # r unmoved
   expect_lt(abs((n_part$logLik - n_none$logLik) - n_part$ll_partial), 1e-9)
   expect_lt(abs(n_part$lod_r - n_none$lod_r), 1e-12)           # partials cancel
@@ -207,8 +207,8 @@ test_that("newton vs grid: engineered scenarios agree (adjudicated by reference)
 
 test_that("newton vs grid: no-complete-observation guard matches production", {
   C3 <- matrix(0L, 3, 3)
-  g <- HSMap:::two_point_pair_grid_cpp(C3, c(5L, 3L, 2L), integer(3), 0.4, 0.4)
-  n <- HSMap:::two_point_pair_newton_cpp(C3, c(5L, 3L, 2L), integer(3), 0.4, 0.4)
+  g <- HalfSibMap:::two_point_pair_grid_cpp(C3, c(5L, 3L, 2L), integer(3), 0.4, 0.4)
+  n <- HalfSibMap:::two_point_pair_newton_cpp(C3, c(5L, 3L, 2L), integer(3), 0.4, 0.4)
   for (f in c("r_hat", "logLik", "lod_r", "lod_ph", "phase", "no_linkage")) {
     expect_true(is.na(g[[f]]), label = paste("grid NA", f))
     expect_true(is.na(n[[f]]), label = paste("newton NA", f))
@@ -249,8 +249,8 @@ test_that("newton vs grid: randomized sweep (seeded) stays within tolerance", {
     s <- .tp_sim_counts(p$n, p$r, p$phase, p$q_i, q_j,
                         miss = p$miss, seed = 5000 + k)
     if (sum(s$C3) == 0) next
-    g <- HSMap:::two_point_pair_grid_cpp(s$C3, s$niO, s$njO, p$q_i, q_j)
-    n <- HSMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, p$q_i, q_j)
+    g <- HalfSibMap:::two_point_pair_grid_cpp(s$C3, s$niO, s$njO, p$q_i, q_j)
+    n <- HalfSibMap:::two_point_pair_newton_cpp(s$C3, s$niO, s$njO, p$q_i, q_j)
     n_checked <- n_checked + 1L
 
     expect_gte(n$logLik, g$logLik - 1e-9)

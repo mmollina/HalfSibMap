@@ -2,7 +2,7 @@
 % Please edit documentation in R/map_plot.R
 \name{plot_map_list}
 \alias{plot_map_list}
-\title{Plot one or more HSMap maps as linkage-group tracks}
+\title{Plot one or more HalfSibMap maps as linkage-group tracks}
 \usage{
 plot_map_list(
   x,

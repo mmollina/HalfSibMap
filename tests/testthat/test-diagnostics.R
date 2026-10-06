@@ -10,8 +10,8 @@ test_that("the no_linkage flag is independent of the optimizer tol", {
              matrix(rep(c(2L, 0L), 15), ncol = 2, byrow = TRUE),
              matrix(rep(c(0L, 2L), 15), ncol = 2, byrow = TRUE))
   colnames(g) <- c("m1", "m2"); storage.mode(g) <- "integer"
-  fine <- HSMap:::pairwise_rf_estimation_multi_parallel_cpp(list(P = g), M, lambda = 0, tol = 1e-8)
-  big  <- HSMap:::pairwise_rf_estimation_multi_parallel_cpp(list(P = g), M, lambda = 0, tol = 0.3)
+  fine <- HalfSibMap:::pairwise_rf_estimation_multi_parallel_cpp(list(P = g), M, lambda = 0, tol = 1e-8)
+  big  <- HalfSibMap:::pairwise_rf_estimation_multi_parallel_cpp(list(P = g), M, lambda = 0, tol = 0.3)
   # r is clearly well below 0.5 under both tolerances
   expect_gt(big$r[1, 2], 0.15); expect_lt(big$r[1, 2], 0.45)
   # a huge optimizer tol must NOT flag an r substantially below 0.5 as no linkage
@@ -28,7 +28,7 @@ test_that("no_linkage still flags a genuine r = 0.5 regardless of tol", {
     rows[[length(rows) + 1]] <- matrix(rep(c(a, b), C[a + 1, b + 1]), ncol = 2, byrow = TRUE)
   g <- do.call(rbind, rows); colnames(g) <- c("m1", "m2"); storage.mode(g) <- "integer"
   for (tl in c(1e-8, 0.3)) {
-    res <- HSMap:::pairwise_rf_estimation_multi_parallel_cpp(list(P = g), M, lambda = 0, tol = tl)
+    res <- HalfSibMap:::pairwise_rf_estimation_multi_parallel_cpp(list(P = g), M, lambda = 0, tol = tl)
     expect_identical(res$no_linkage[1, 2], 1L)
   }
 })

@@ -1,6 +1,6 @@
-#' HSMap: maternal linkage mapping in open-pollinated diploid families
+#' HalfSibMap: maternal linkage mapping in open-pollinated diploid families
 #'
-#' HSMap builds maternal linkage maps from open-pollinated / unknown-sire diploid
+#' HalfSibMap builds maternal linkage maps from open-pollinated / unknown-sire diploid
 #' half-sib families: one known, genotyped dam, many offspring, unobserved fathers.
 #' The production chromosome-wide estimator, \code{\link{hmm_map_source_aware}}, is a
 #' hidden Markov model whose state pairs the transmitted maternal homolog with a
@@ -16,5 +16,5 @@
 #' @keywords internal
 #' @import RcppParallel
 #' @importFrom Rcpp evalCpp sourceCpp
-#' @useDynLib HSMap, .registration = TRUE
+#' @useDynLib HalfSibMap, .registration = TRUE
 "_PACKAGE"

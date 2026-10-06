@@ -194,7 +194,7 @@ test_map_heterogeneity <- function(dat, map, epsilon = NULL, eta_range = c(0.1, 
 
 #' @export
 print.HSMap.hetero <- function(x, ...) {
-  cat("HSMap conditional global-scale heterogeneity test (per-dam Haldane scaling)\n")
+  cat("HalfSibMap conditional global-scale heterogeneity test (per-dam Haldane scaling)\n")
   cat("  Null: one common global map scale;  Alt: a per-dam global scale.\n")
   cat("  Global-scale test (NOT interval-specific); conditional on fitted phase and paternal q.\n")
   cat(sprintf("  %d dams | common scale eta = %.3f\n", nrow(x$per_dam), x$eta_common))

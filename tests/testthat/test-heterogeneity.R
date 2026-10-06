@@ -169,7 +169,7 @@ test_that("heterogeneity scaled map uses the uncapped biological formula (not ca
   }
   for (i in seq_len(nrow(het$per_dam))) {
     dn <- het$per_dam$dam[i]; eta <- het$eta[[dn]]; a <- align(dn)
-    ll <- HSMap:::loglik_hs_cpp(a$G, a$M, a$ph, r_scaled(eta), a$emis, eps)
+    ll <- HalfSibMap:::loglik_hs_cpp(a$G, a$M, a$ph, r_scaled(eta), a$emis, eps)
     expect_equal(ll, het$per_dam$ll_alt[i], tolerance = 1e-5)   # function uses r_scaled(eta), uncapped
   }
   # the biological scaling is NOT capped at gap_r: at a large eta it reaches above gap_r

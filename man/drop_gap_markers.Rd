@@ -2,7 +2,7 @@
 % Please edit documentation in R/drop_add_core.R
 \name{drop_gap_markers}
 \alias{drop_gap_markers}
-\title{Remove SNPs that create large adjacent gaps in an HSMap map}
+\title{Remove SNPs that create large adjacent gaps in a HalfSibMap map}
 \usage{
 drop_gap_markers(
   x,

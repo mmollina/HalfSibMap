@@ -433,7 +433,7 @@ hmm_map <- function(
             "q_k = P(paternal gamete transmits A) = pi_AA + 0.5*pi_Aa is identified). ",
             "Routing to the identifiable 'gametic' model; any supplied pi_prior is ",
             "collapsed to its induced q. The legacy engine remains available via ",
-            "HSMap:::hmm_hs_cpp_parallel(paternal_mode = 'per_marker') for historical ",
+            "HalfSibMap:::hmm_hs_cpp_parallel(paternal_mode = 'per_marker') for historical ",
             "reproduction.", call. = FALSE)
   # gametic, HWE, and (deprecated) per_marker all route to the HWE engine (p_k == q_k).
   "HWE"

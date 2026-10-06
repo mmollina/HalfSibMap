@@ -1,7 +1,7 @@
 #' Filter a two-point result (HSMap.tpt) by RF/LOD, with optional pre-ordering
 #'
 #' @description
-#' This function filters the **two-point** output from HSMap by:
+#' This function filters the **two-point** output from HalfSibMap by:
 #' 1) optionally reordering markers by a user-supplied sequence `order`,
 #' 2) keeping only pairs with LOD >= threshold and RF <= threshold
 #'    (optionally within a diagonal band around the matrix diagonal), and

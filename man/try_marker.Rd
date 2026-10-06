@@ -86,7 +86,7 @@ insertion: \code{position}, \code{logLik}, \code{dLL_best},
 \code{"no credible internal placement (unlinked)"}) and \code{settings}.
 }
 \description{
-Evaluates where a marker is best supported by the HSMap multipoint
+Evaluates where a marker is best supported by the HalfSibMap multipoint
 likelihood, given an established local order. The target marker is removed,
 the remaining scaffold is held fixed, and the marker is reinserted into
 every gap; each placement is refitted from scratch and scored. The
@@ -141,7 +141,7 @@ honest answer is a tie, not a winner.
 recombination have no identifiable relative order; the near-optimal set
 will legitimately contain several positions or permutations.
 \item \strong{Model misspecification.} Likelihoods are computed under the
-HSMap maternal model (paternal alleles independent across markers,
+HalfSibMap maternal model (paternal alleles independent across markers,
 a single global emission-error rate). Where those assumptions fail, the
 ranking can be confidently wrong.
 \item \strong{Genotype error.} A noisy marker can produce a displaced or

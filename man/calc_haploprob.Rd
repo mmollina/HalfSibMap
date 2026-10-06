@@ -2,7 +2,7 @@
 % Please edit documentation in R/haplo_core.R
 \name{calc_haploprob}
 \alias{calc_haploprob}
-\title{Per-child haplotype posteriors (gamma) from an HSMap map}
+\title{Per-child haplotype posteriors (gamma) from a HalfSibMap map}
 \usage{
 calc_haploprob(dat, map, dam = NULL, epsilon = NULL)
 }

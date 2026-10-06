@@ -1,4 +1,4 @@
-# Regression tests for the paternal responsibility E-step in the HSMap EM.
+# Regression tests for the paternal responsibility E-step in the HalfSibMap EM.
 #
 # The single-locus paternal responsibility must normalize the emission PER
 # maternal state h before averaging over the maternal-state posterior gamma:
@@ -52,11 +52,11 @@ test_that("unregularized (lambda=0) EM warm-started from a regularized fit does 
     m1 <- hmm_map(d$dat, phased = d$oph, dam = 1, epsilon = 0.01, paternal_mode = "HWE",
                   lambda = 2, tol = 1e-8, maxit = 2000)
     q1 <- as.numeric(m1$fit$pi["AA", ] + 0.5 * m1$fit$pi["Aa", ]); r1 <- as.numeric(m1$fit$r)
-    ll_start <- HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, r1, hwe_cols(q1), 0.01)
-    f <- HSMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
+    ll_start <- HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, r1, hwe_cols(q1), 0.01)
+    f <- HalfSibMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
             pi_prior_in = hwe_cols(q1), lambda = 0, epsilon = 0.01, tol = 1e-10,
             maxit = 2000, paternal_mode = "HWE", Pi_prior_in = NULL, r_init = r1)
-    ll_final <- HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(f$r), f$pi, 0.01)
+    ll_final <- HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(f$r), f$pi, 0.01)
     expect_gte(ll_final, ll_start - 1e-6)
   }
 })
@@ -69,12 +69,12 @@ test_that("penalized (lambda>0) objective does not decrease when warm-started", 
   m0 <- hmm_map(d$dat, phased = d$oph, dam = 1, epsilon = 0.01, paternal_mode = "HWE",
                 lambda = 0, tol = 1e-8, maxit = 2000)
   q0 <- as.numeric(m0$fit$pi["AA", ] + 0.5 * m0$fit$pi["Aa", ]); r0 <- as.numeric(m0$fit$r)
-  obj_start <- HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, r0, hwe_cols(q0), 0.01) + pen_q(q0, lam)
-  f <- HSMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
+  obj_start <- HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, r0, hwe_cols(q0), 0.01) + pen_q(q0, lam)
+  f <- HalfSibMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
           pi_prior_in = hwe_cols(rep(0.5, length(d$mk))), lambda = lam, epsilon = 0.01,
           tol = 1e-10, maxit = 2000, paternal_mode = "HWE", Pi_prior_in = NULL, r_init = r0)
   qf <- as.numeric(f$pi["AA", ] + 0.5 * f$pi["Aa", ])
-  obj_final <- HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(f$r), f$pi, 0.01) + pen_q(qf, lam)
+  obj_final <- HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(f$r), f$pi, 0.01) + pen_q(qf, lam)
   expect_gte(obj_final, obj_start - 1e-6)
 })
 
@@ -84,7 +84,7 @@ test_that("impossible maternal state at epsilon=0 yields no NaN/Inf/division-by-
   M <- d$M; G <- d$G
   M[10] <- 2L                    # force marker 10 maternal AA (homozygous)
   G[1:5, 10] <- 0L               # inject offspring 'aa' at marker 10: impossible (mom AA -> aa)
-  f <- HSMap:::hmm_hs_cpp_parallel(G, M, d$ph, r_start = 0.05, pi_mode = "HWE",
+  f <- HalfSibMap:::hmm_hs_cpp_parallel(G, M, d$ph, r_start = 0.05, pi_mode = "HWE",
           pi_prior_in = NULL, lambda = 0, epsilon = 0, tol = 1e-8, maxit = 500,
           paternal_mode = "HWE")
   expect_true(all(is.finite(as.numeric(f$r))))
@@ -108,7 +108,7 @@ test_that("final observed-data log-likelihood matches loglik_hs_cpp at returned 
   m <- hmm_map(d$dat, phased = d$oph, dam = 1, epsilon = 0.01, paternal_mode = "HWE",
                lambda = 2, tol = 1e-8, maxit = 2000)
   q <- as.numeric(m$fit$pi["AA", ] + 0.5 * m$fit$pi["Aa", ])
-  ll <- HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(m$fit$r), hwe_cols(q), 0.01)
+  ll <- HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(m$fit$r), hwe_cols(q), 0.01)
   expect_true(is.finite(ll))
   expect_equal(ll, m$fit$logLik, tolerance = 1e-3)   # engine LL == recomputed LL at convergence
 })

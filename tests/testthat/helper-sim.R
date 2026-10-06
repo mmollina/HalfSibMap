@@ -1,4 +1,4 @@
-# Shared helpers for HSMap tests.
+# Shared helpers for HalfSibMap tests.
 
 make_dat <- function(sim) {
   structure(list(G_list = sim$G_list, M_list = sim$M_list), class = "HSMap.data")

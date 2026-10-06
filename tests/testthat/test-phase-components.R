@@ -12,24 +12,24 @@
 
 test_that(".pf_components labels components correctly", {
   # single vertex
-  expect_equal(HSMap:::.pf_components(matrix(FALSE, 1, 1)), 1L)
+  expect_equal(HalfSibMap:::.pf_components(matrix(FALSE, 1, 1)), 1L)
 
   # all singletons -> one component each, in ascending vertex order
-  expect_equal(HSMap:::.pf_components(matrix(FALSE, 5, 5)), 1:5)
+  expect_equal(HalfSibMap:::.pf_components(matrix(FALSE, 5, 5)), 1:5)
 
   # clique -> one component
   S <- matrix(TRUE, 12, 12); diag(S) <- FALSE
-  expect_equal(HSMap:::.pf_components(S), rep(1L, 12))
+  expect_equal(HalfSibMap:::.pf_components(S), rep(1L, 12))
 
   # two disconnected blocks -> ids assigned in ascending vertex order
   S <- matrix(FALSE, 6, 6)
   S[1:3, 1:3] <- TRUE; S[4:6, 4:6] <- TRUE; diag(S) <- FALSE
-  expect_equal(HSMap:::.pf_components(S), c(1L, 1L, 1L, 2L, 2L, 2L))
+  expect_equal(HalfSibMap:::.pf_components(S), c(1L, 1L, 1L, 2L, 2L, 2L))
 
   # path graph: connected, and deep recursion is not used
   n <- 200L; S <- matrix(FALSE, n, n); i <- 1:(n - 1L)
   S[cbind(i, i + 1L)] <- TRUE; S[cbind(i + 1L, i)] <- TRUE
-  expect_equal(HSMap:::.pf_components(S), rep(1L, n))
+  expect_equal(HalfSibMap:::.pf_components(S), rep(1L, n))
 })
 
 test_that(".pf_components agrees with an independent reference on random graphs", {
@@ -54,7 +54,7 @@ test_that(".pf_components agrees with an independent reference on random graphs"
   for (n in c(6L, 25L, 80L)) {
     for (p in c(0.01, 0.08, 0.5, 0.95)) {
       M <- matrix(runif(n * n) < p, n, n); M <- M | t(M); diag(M) <- FALSE
-      expect_equal(HSMap:::.pf_components(M), ref(M),
+      expect_equal(HalfSibMap:::.pf_components(M), ref(M),
                    info = sprintf("n=%d p=%.2f", n, p))
     }
   }
@@ -64,7 +64,7 @@ test_that(".pf_components stays near-quadratic on a dense graph", {
   # A 400-vertex clique. Quadratic: milliseconds. The old quartic behaviour took
   # tens of seconds, so this bound is generous while still catching a regression.
   S <- matrix(TRUE, 400L, 400L); diag(S) <- FALSE
-  el <- system.time(cc <- HSMap:::.pf_components(S))[["elapsed"]]
+  el <- system.time(cc <- HalfSibMap:::.pf_components(S))[["elapsed"]]
   expect_equal(cc, rep(1L, 400L))
   expect_lt(el, 5)
 })

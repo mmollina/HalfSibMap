@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_core.R
 \name{read_HSMap_data}
 \alias{read_HSMap_data}
-\title{Read HSMap pedigree and genotype CSVs}
+\title{Read HalfSibMap pedigree and genotype CSVs}
 \usage{
 read_HSMap_data(pedigree, genotypes, na_strings = c("NA", ".", ""))
 }
@@ -24,16 +24,16 @@ An object of class HSMap.data with:
 }
 }
 \description{
-Read HSMap pedigree and genotype CSVs
+Read HalfSibMap pedigree and genotype CSVs
 }
 \examples{
 # A small simulated open-pollinated example dataset ships with the package.
-ped  <- system.file("extdata", "example_pedigree.csv",  package = "HSMap")
-geno <- system.file("extdata", "example_genotypes.csv", package = "HSMap")
+ped  <- system.file("extdata", "example_pedigree.csv",  package = "HalfSibMap")
+geno <- system.file("extdata", "example_genotypes.csv", package = "HalfSibMap")
 dat  <- read_HSMap_data(ped, geno)
 dat
 }
 \seealso{
 \code{\link{pairwise_rf}}, \code{\link{hmm_map_blocks}}; the
-\code{vignette("getting-started", package = "HSMap")} for the full workflow.
+\code{vignette("getting-started", package = "HalfSibMap")} for the full workflow.
 }

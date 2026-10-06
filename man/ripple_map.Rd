@@ -73,7 +73,7 @@ An object of class \code{"HSMap.ripple"}: a list with
 Slides a window along an established order and, for every window position,
 evaluates all \code{factorial(window)} permutations of the window's markers
 with the markers outside it held fixed. Each candidate order is refitted from
-scratch and scored by the HSMap multipoint likelihood, so orders are compared
+scratch and scored by the HalfSibMap multipoint likelihood, so orders are compared
 honestly rather than through recombination fractions that are only valid for
 the baseline.
 
@@ -117,7 +117,7 @@ honest answer is a tie, not a winner.
 recombination have no identifiable relative order; the near-optimal set
 will legitimately contain several positions or permutations.
 \item \strong{Model misspecification.} Likelihoods are computed under the
-HSMap maternal model (paternal alleles independent across markers,
+HalfSibMap maternal model (paternal alleles independent across markers,
 a single global emission-error rate). Where those assumptions fail, the
 ranking can be confidently wrong.
 \item \strong{Genotype error.} A noisy marker can produce a displaced or

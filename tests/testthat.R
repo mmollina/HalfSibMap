@@ -1,4 +1,4 @@
 library(testthat)
-library(HSMap)
+library(HalfSibMap)
 
-test_check("HSMap")
+test_check("HalfSibMap")

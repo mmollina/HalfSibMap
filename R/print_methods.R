@@ -1,15 +1,15 @@
-# Concise print methods for the primary HSMap result classes, so interactive users get
+# Concise print methods for the primary HalfSibMap result classes, so interactive users get
 # a readable one-screen summary instead of a raw list dump.
 
 `%||%` <- function(a, b) if (is.null(a)) b else a
 
-#' Print methods for HSMap result objects
+#' Print methods for HalfSibMap result objects
 #'
-#' Concise one-screen summaries for the primary HSMap result classes
+#' Concise one-screen summaries for the primary HalfSibMap result classes
 #' (two-point results, phase objects, single-dam and blockwise maps, and
 #' per-offspring haplotype posteriors).
 #'
-#' @param x An HSMap result object.
+#' @param x A HalfSibMap result object.
 #' @param ... Ignored.
 #' @return \code{x}, invisibly.
 #' @name hsmap-print

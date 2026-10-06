@@ -2,7 +2,7 @@
 % Please edit documentation in R/pairwise_heatmap.R
 \name{pairwise_heatmap}
 \alias{pairwise_heatmap}
-\title{Plot recombination or LOD matrix from an HSMap two-point result}
+\title{Plot recombination or LOD matrix from a HalfSibMap two-point result}
 \usage{
 pairwise_heatmap(
   tpt,

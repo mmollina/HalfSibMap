@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // hmm_hs_cpp_parallel
 Rcpp::List hmm_hs_cpp_parallel(Rcpp::IntegerMatrix G, Rcpp::IntegerVector M, Rcpp::IntegerVector phase_vec, double r_start, std::string pi_mode, Rcpp::Nullable<Rcpp::NumericMatrix> pi_prior_in, double lambda, double epsilon, double tol, int maxit, std::string paternal_mode, Rcpp::Nullable<Rcpp::NumericMatrix> Pi_prior_in, Rcpp::Nullable<Rcpp::NumericVector> r_init, std::string epsilon_model, double epsilon_tau);
-RcppExport SEXP _HSMap_hmm_hs_cpp_parallel(SEXP GSEXP, SEXP MSEXP, SEXP phase_vecSEXP, SEXP r_startSEXP, SEXP pi_modeSEXP, SEXP pi_prior_inSEXP, SEXP lambdaSEXP, SEXP epsilonSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP paternal_modeSEXP, SEXP Pi_prior_inSEXP, SEXP r_initSEXP, SEXP epsilon_modelSEXP, SEXP epsilon_tauSEXP) {
+RcppExport SEXP _HalfSibMap_hmm_hs_cpp_parallel(SEXP GSEXP, SEXP MSEXP, SEXP phase_vecSEXP, SEXP r_startSEXP, SEXP pi_modeSEXP, SEXP pi_prior_inSEXP, SEXP lambdaSEXP, SEXP epsilonSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP paternal_modeSEXP, SEXP Pi_prior_inSEXP, SEXP r_initSEXP, SEXP epsilon_modelSEXP, SEXP epsilon_tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,7 +37,7 @@ END_RCPP
 }
 // gamma_cpp
 Rcpp::NumericVector gamma_cpp(Rcpp::IntegerMatrix G, Rcpp::IntegerVector M, Rcpp::IntegerVector phase_vec, Rcpp::NumericVector r, Rcpp::NumericMatrix pi_emis, double epsilon);
-RcppExport SEXP _HSMap_gamma_cpp(SEXP GSEXP, SEXP MSEXP, SEXP phase_vecSEXP, SEXP rSEXP, SEXP pi_emisSEXP, SEXP epsilonSEXP) {
+RcppExport SEXP _HalfSibMap_gamma_cpp(SEXP GSEXP, SEXP MSEXP, SEXP phase_vecSEXP, SEXP rSEXP, SEXP pi_emisSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -53,7 +53,7 @@ END_RCPP
 }
 // hmm_hs_joint_cpp
 Rcpp::List hmm_hs_joint_cpp(Rcpp::List G_list, Rcpp::List M_list, Rcpp::List phase_list, double r_start, std::string pi_mode, Rcpp::Nullable<Rcpp::List> pi_prior_list_in, double lambda, double epsilon, double tol, int maxit, std::string paternal_mode, Rcpp::Nullable<Rcpp::List> Pi_prior_list_in);
-RcppExport SEXP _HSMap_hmm_hs_joint_cpp(SEXP G_listSEXP, SEXP M_listSEXP, SEXP phase_listSEXP, SEXP r_startSEXP, SEXP pi_modeSEXP, SEXP pi_prior_list_inSEXP, SEXP lambdaSEXP, SEXP epsilonSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP paternal_modeSEXP, SEXP Pi_prior_list_inSEXP) {
+RcppExport SEXP _HalfSibMap_hmm_hs_joint_cpp(SEXP G_listSEXP, SEXP M_listSEXP, SEXP phase_listSEXP, SEXP r_startSEXP, SEXP pi_modeSEXP, SEXP pi_prior_list_inSEXP, SEXP lambdaSEXP, SEXP epsilonSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP paternal_modeSEXP, SEXP Pi_prior_list_inSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -75,7 +75,7 @@ END_RCPP
 }
 // loglik_hs_cpp
 double loglik_hs_cpp(Rcpp::IntegerMatrix G, Rcpp::IntegerVector M, Rcpp::IntegerVector phase_vec, Rcpp::NumericVector r, Rcpp::NumericMatrix pi_emis, double epsilon);
-RcppExport SEXP _HSMap_loglik_hs_cpp(SEXP GSEXP, SEXP MSEXP, SEXP phase_vecSEXP, SEXP rSEXP, SEXP pi_emisSEXP, SEXP epsilonSEXP) {
+RcppExport SEXP _HalfSibMap_loglik_hs_cpp(SEXP GSEXP, SEXP MSEXP, SEXP phase_vecSEXP, SEXP rSEXP, SEXP pi_emisSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -91,7 +91,7 @@ END_RCPP
 }
 // simulate_offspring_cpp
 Rcpp::List simulate_offspring_cpp(Rcpp::IntegerVector M, Rcpp::NumericMatrix pi_true, Rcpp::NumericVector r_true, int n_offspring, double error_rate, bool keep_paths, Rcpp::Nullable<Rcpp::IntegerVector> z_phase_in);
-RcppExport SEXP _HSMap_simulate_offspring_cpp(SEXP MSEXP, SEXP pi_trueSEXP, SEXP r_trueSEXP, SEXP n_offspringSEXP, SEXP error_rateSEXP, SEXP keep_pathsSEXP, SEXP z_phase_inSEXP) {
+RcppExport SEXP _HalfSibMap_simulate_offspring_cpp(SEXP MSEXP, SEXP pi_trueSEXP, SEXP r_trueSEXP, SEXP n_offspringSEXP, SEXP error_rateSEXP, SEXP keep_pathsSEXP, SEXP z_phase_inSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -108,7 +108,7 @@ END_RCPP
 }
 // pairwise_rf_estimation_multi_parallel_cpp
 Rcpp::List pairwise_rf_estimation_multi_parallel_cpp(Rcpp::List G_list, Rcpp::List M_list, double lambda, double q0, double tol, int maxit, double tiny, bool share_q_across_dams, bool return_diagnostics, bool verbose, std::string optimizer);
-RcppExport SEXP _HSMap_pairwise_rf_estimation_multi_parallel_cpp(SEXP G_listSEXP, SEXP M_listSEXP, SEXP lambdaSEXP, SEXP q0SEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP, SEXP share_q_across_damsSEXP, SEXP return_diagnosticsSEXP, SEXP verboseSEXP, SEXP optimizerSEXP) {
+RcppExport SEXP _HalfSibMap_pairwise_rf_estimation_multi_parallel_cpp(SEXP G_listSEXP, SEXP M_listSEXP, SEXP lambdaSEXP, SEXP q0SEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP, SEXP share_q_across_damsSEXP, SEXP return_diagnosticsSEXP, SEXP verboseSEXP, SEXP optimizerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -129,7 +129,7 @@ END_RCPP
 }
 // two_point_pair_grid_cpp
 Rcpp::List two_point_pair_grid_cpp(Rcpp::IntegerMatrix C3, Rcpp::IntegerVector niO, Rcpp::IntegerVector njO, double q_i, double q_j, double tol, int maxit, double tiny);
-RcppExport SEXP _HSMap_two_point_pair_grid_cpp(SEXP C3SEXP, SEXP niOSEXP, SEXP njOSEXP, SEXP q_iSEXP, SEXP q_jSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP) {
+RcppExport SEXP _HalfSibMap_two_point_pair_grid_cpp(SEXP C3SEXP, SEXP niOSEXP, SEXP njOSEXP, SEXP q_iSEXP, SEXP q_jSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -147,7 +147,7 @@ END_RCPP
 }
 // two_point_pair_newton_cpp
 Rcpp::List two_point_pair_newton_cpp(Rcpp::IntegerMatrix C3, Rcpp::IntegerVector niO, Rcpp::IntegerVector njO, double q_i, double q_j, double tol, int maxit, double tiny);
-RcppExport SEXP _HSMap_two_point_pair_newton_cpp(SEXP C3SEXP, SEXP niOSEXP, SEXP njOSEXP, SEXP q_iSEXP, SEXP q_jSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP) {
+RcppExport SEXP _HalfSibMap_two_point_pair_newton_cpp(SEXP C3SEXP, SEXP niOSEXP, SEXP njOSEXP, SEXP q_iSEXP, SEXP q_jSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -165,7 +165,7 @@ END_RCPP
 }
 // two_point_pair_bench_cpp
 Rcpp::List two_point_pair_bench_cpp(Rcpp::IntegerMatrix C3, Rcpp::IntegerVector niO, Rcpp::IntegerVector njO, double q_i, double q_j, int nrep, std::string method, double tol, int maxit, double tiny);
-RcppExport SEXP _HSMap_two_point_pair_bench_cpp(SEXP C3SEXP, SEXP niOSEXP, SEXP njOSEXP, SEXP q_iSEXP, SEXP q_jSEXP, SEXP nrepSEXP, SEXP methodSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP) {
+RcppExport SEXP _HalfSibMap_two_point_pair_bench_cpp(SEXP C3SEXP, SEXP niOSEXP, SEXP njOSEXP, SEXP q_iSEXP, SEXP q_jSEXP, SEXP nrepSEXP, SEXP methodSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP tinySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -185,19 +185,19 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_HSMap_hmm_hs_cpp_parallel", (DL_FUNC) &_HSMap_hmm_hs_cpp_parallel, 15},
-    {"_HSMap_gamma_cpp", (DL_FUNC) &_HSMap_gamma_cpp, 6},
-    {"_HSMap_hmm_hs_joint_cpp", (DL_FUNC) &_HSMap_hmm_hs_joint_cpp, 12},
-    {"_HSMap_loglik_hs_cpp", (DL_FUNC) &_HSMap_loglik_hs_cpp, 6},
-    {"_HSMap_simulate_offspring_cpp", (DL_FUNC) &_HSMap_simulate_offspring_cpp, 7},
-    {"_HSMap_pairwise_rf_estimation_multi_parallel_cpp", (DL_FUNC) &_HSMap_pairwise_rf_estimation_multi_parallel_cpp, 11},
-    {"_HSMap_two_point_pair_grid_cpp", (DL_FUNC) &_HSMap_two_point_pair_grid_cpp, 8},
-    {"_HSMap_two_point_pair_newton_cpp", (DL_FUNC) &_HSMap_two_point_pair_newton_cpp, 8},
-    {"_HSMap_two_point_pair_bench_cpp", (DL_FUNC) &_HSMap_two_point_pair_bench_cpp, 10},
+    {"_HalfSibMap_hmm_hs_cpp_parallel", (DL_FUNC) &_HalfSibMap_hmm_hs_cpp_parallel, 15},
+    {"_HalfSibMap_gamma_cpp", (DL_FUNC) &_HalfSibMap_gamma_cpp, 6},
+    {"_HalfSibMap_hmm_hs_joint_cpp", (DL_FUNC) &_HalfSibMap_hmm_hs_joint_cpp, 12},
+    {"_HalfSibMap_loglik_hs_cpp", (DL_FUNC) &_HalfSibMap_loglik_hs_cpp, 6},
+    {"_HalfSibMap_simulate_offspring_cpp", (DL_FUNC) &_HalfSibMap_simulate_offspring_cpp, 7},
+    {"_HalfSibMap_pairwise_rf_estimation_multi_parallel_cpp", (DL_FUNC) &_HalfSibMap_pairwise_rf_estimation_multi_parallel_cpp, 11},
+    {"_HalfSibMap_two_point_pair_grid_cpp", (DL_FUNC) &_HalfSibMap_two_point_pair_grid_cpp, 8},
+    {"_HalfSibMap_two_point_pair_newton_cpp", (DL_FUNC) &_HalfSibMap_two_point_pair_newton_cpp, 8},
+    {"_HalfSibMap_two_point_pair_bench_cpp", (DL_FUNC) &_HalfSibMap_two_point_pair_bench_cpp, 10},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_HSMap(DllInfo *dll) {
+RcppExport void R_init_HalfSibMap(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

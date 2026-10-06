@@ -7,7 +7,7 @@
 # An independent R implementation of the two-marker genotype model mirrors the C++
 # kernel so the engine can be cross-checked against explicit marginalization.
 
-.pw <- function(G, M, ...) HSMap:::pairwise_rf_estimation_multi_parallel_cpp(G, M, ...)
+.pw <- function(G, M, ...) HalfSibMap:::pairwise_rf_estimation_multi_parallel_cpp(G, M, ...)
 
 # P(Y = 0,1,2) for one offspring: dam-transmitted maternal allele m (0=a,1=A) and
 # paternal gamete A-frequency p.
@@ -202,7 +202,14 @@ test_that("complete-data likelihood/LOD use the unchanged kernel given the same 
   llp <- function(P) sum(ifelse(C > 0, C * log(pmax(P, 1e-12)), 0))
   llC <- llp(.joint33(0, r_hat, qi, qj)); llR <- llp(.joint33(1, r_hat, qi, qj))
   expect_equal(res$logLik[1, 2], max(llC, llR),           tolerance = 1e-8)  # no missing -> pure kernel
-  expect_equal(res$lod_ph[1, 2], abs(llC - llR) / log(10), tolerance = 1e-8)
+  # phase call is decided at r_hat; the phase LOD is the PROFILED contrast:
+  # max_r llC vs max_r llR, each over [1e-6, 0.5] -- not the contrast at r_hat.
+  expect_identical(res$mom_phase_list$P1[1, 2], if (llC > llR) 1L else 0L)
+  prof <- function(phase) stats::optimize(function(r) llp(.joint33(phase, r, qi, qj)),
+                                          c(1e-6, 0.5), maximum = TRUE, tol = 1e-12)$objective
+  expect_equal(res$lod_ph[1, 2], abs(prof(0) - prof(1)) / log(10), tolerance = 1e-6)
+  expect_lt(res$lod_ph[1, 2], abs(llC - llR) / log(10))                # strictly below the shared-r ratio
+  expect_equal(res$lod_ph[1, 2], res$lod_r[1, 2], tolerance = 1e-12)  # single family: equals linkage LOD
 })
 
 

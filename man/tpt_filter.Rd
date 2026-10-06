@@ -66,7 +66,7 @@ subset to the kept markers (square, same order).
 }
 }
 \description{
-This function filters the \strong{two-point} output from HSMap by:
+This function filters the \strong{two-point} output from HalfSibMap by:
 \enumerate{
 \item optionally reordering markers by a user-supplied sequence \code{order},
 \item keeping only pairs with LOD >= threshold and RF <= threshold

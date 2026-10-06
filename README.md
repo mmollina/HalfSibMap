@@ -1,16 +1,16 @@
-# HSMap
+# HalfSibMap
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/mmollina/HSMap/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mmollina/HSMap/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/mmollina/HalfSibMap/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mmollina/HalfSibMap/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 <!-- badges: end -->
 
-**HSMap** performs maternal linkage mapping in **diploid half-sib /
+**HalfSibMap** performs maternal linkage mapping in **diploid half-sib /
 open-pollinated families** in which the maternal parent is known and genotyped
 while paternal genotypes are unavailable: one dam, many offspring, unobserved
 fathers.
 
-From offspring SNP dosages and the dam's genotype, HSMap:
+From offspring SNP dosages and the dam's genotype, HalfSibMap:
 
 - estimates **pairwise maternal recombination fractions** and phase support for
   every marker pair;
@@ -44,7 +44,7 @@ paper (forthcoming); they are not part of the released method's paper.
 
 ```r
 # install.packages("remotes")
-remotes::install_github("mmollina/HSMap")
+remotes::install_github("mmollina/HalfSibMap")
 ```
 
 ## Minimal example
@@ -53,10 +53,10 @@ A small **simulated** open-pollinated family ships with the package, so the
 whole example runs without any external data:
 
 ```r
-library(HSMap)
+library(HalfSibMap)
 
-ped  <- system.file("extdata", "example_pedigree.csv",  package = "HSMap")
-geno <- system.file("extdata", "example_genotypes.csv", package = "HSMap")
+ped  <- system.file("extdata", "example_pedigree.csv",  package = "HalfSibMap")
+geno <- system.file("extdata", "example_genotypes.csv", package = "HalfSibMap")
 dat  <- read_HSMap_data(ped, geno)
 
 ## two-point analysis and filtering
@@ -97,15 +97,15 @@ map            # length, alpha/beta, sharing-mode occupancy, log-likelihood
 
 ## Documentation
 
-- `vignette("getting-started", package = "HSMap")` walks through the full
+- `vignette("getting-started", package = "HalfSibMap")` walks through the full
   workflow on simulated data.
 - Every exported function has a help page (`?hmm_map_source_aware`, etc.).
 
 ## Citation
 
-A methodological manuscript describing HSMap is in preparation. Until it is
-available, please cite the package itself (`citation("HSMap")`).
+A methodological manuscript describing HalfSibMap is in preparation. Until it is
+available, please cite the package itself (`citation("HalfSibMap")`).
 
 ## License
 
-MIT © the HSMap authors.
+MIT © the HalfSibMap authors.

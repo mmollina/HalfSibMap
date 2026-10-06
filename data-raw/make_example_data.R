@@ -6,7 +6,7 @@
 # drive the analysis are fully determined by `seed` below.
 #
 #   Rscript -e "devtools::load_all()" data-raw/make_example_data.R
-library(HSMap)
+library(HalfSibMap)
 
 set.seed(2024)
 # A single linkage group of 24 markers at ~5 cM (Haldane) spacing. Every dam is

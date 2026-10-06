@@ -1,4 +1,4 @@
-#' Phase from pairwise for one or more dams (HSMap)
+#' Phase from pairwise for one or more dams (HalfSibMap)
 #'
 #' @description
 #' Convert dam-specific pairwise maternal phase calls and their LOD support into an
@@ -8,6 +8,9 @@
 #' The signed, LOD-weighted phase graph is built **separately for each dam** from
 #' that dam's own `lod_ph_list[[d]]` (not the pooled `lod_ph`). Only edges with an
 #' available phase sign, finite LOD, and LOD above the support threshold are used.
+#' The edge weight is the **profiled** phase LOD of \code{\link{pairwise_rf}}; for
+#' a single family it equals the pairwise linkage LOD, so \code{min_phase_lod} is
+#' then a threshold on the linkage evidence of an edge.
 #' The graph is split into connected components; within each component a spectral
 #' initialization and greedy coordinate ascent orient the markers (a heuristic, not
 #' guaranteed globally optimal). The relative orientation of different components is
@@ -21,8 +24,9 @@
 #'   Markers absent for a dam are dropped with a warning.
 #' @param dam Which dam(s): a dam name/index, a vector of them, or \code{"all"}
 #'   (default).
-#' @param min_phase_lod Minimum phase LOD for an edge to be treated as supported
-#'   (default \code{0}). Even at the default, edges with zero/near-zero evidence are
+#' @param min_phase_lod Minimum profiled phase LOD for an edge to be treated as
+#'   supported (default \code{0}); for a single family this is a linkage-LOD
+#'   threshold. Even at the default, edges with zero/near-zero evidence are
 #'   excluded (see \code{tie_tol}); an edge counts only when its LOD strictly exceeds
 #'   \code{max(min_phase_lod, tie_tol)}. \strong{The default \code{0} is a backward-
 #'   compatibility choice, not a statistically validated threshold}; a suitable value

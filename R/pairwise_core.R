@@ -26,8 +26,9 @@
 #'
 #' @return A list with matrices \code{r}, \code{lod_r} (raw LOD vs the exact
 #' \code{r = 0.5} null), \code{lod_ph}, \code{logLik}, and \code{no_linkage} (all
-#' T x T); \code{mom_phase_list}; \code{lod_ph_list} (per-dam phase-LOD matrices,
-#' whose elementwise sum is \code{lod_ph}); \code{q_list} (per-dam per-marker
+#' T x T); \code{mom_phase_list}; \code{lod_ph_list} (per-dam \emph{profiled}
+#' phase-LOD matrices, equal to \code{lod_r} for a single family where a phase is
+#' called, whose elementwise sum is \code{lod_ph}); \code{q_list} (per-dam per-marker
 #' \code{q_k^(d)}, \code{NA} where the dam is not heterozygous); \code{optimizer},
 #' \code{n_grid}; and, if \code{return_diagnostics}, a \code{diagnostics} list.
 #'
@@ -145,7 +146,7 @@ cpp_pairwise_rf <- function(G_list,
 #' @description
 #' This function estimates **pairwise recombination fractions (RFs)** for all
 #' marker pairs by aggregating genotype data across multiple nuclear families
-#' (dams). It leverages HSMap’s efficient C++ backend for parallel computation.
+#' (dams). It leverages HalfSibMap’s efficient C++ backend for parallel computation.
 #'
 #' The function first selects a common set of markers based on a user-defined
 #' **presence threshold**, which controls whether to use the union, intersection,
@@ -195,6 +196,17 @@ cpp_pairwise_rf <- function(G_list,
 #'     \eqn{[\varepsilon, 0.5]} (including 0.5) followed by bounded local
 #'     refinement. At \eqn{\hat r = 0.5} exactly, coupling and repulsion are
 #'     theoretically identical, so the phase call is \code{NA} with phase LOD 0.
+#'   \item Reports the phase call of each double-heterozygous dam (the phase it
+#'     takes at the pooled optimum) together with the \strong{profiled} phase
+#'     LOD: the maximized log10 likelihood against the maximum attainable with
+#'     that dam's phase forced to the alternative and \eqn{r} (and every other
+#'     dam's phase) re-optimized. Because \eqn{P^{(R)}(r) = P^{(C)}(1-r)} and
+#'     each phase-specific likelihood is concave, the losing phase of a single
+#'     family attains its constrained maximum at the no-linkage null
+#'     \eqn{r = 0.5}, so for one family the profiled phase LOD \strong{equals
+#'     the linkage LOD} \code{lod_r} whenever a phase is called. Evaluating both
+#'     phases at the shared \eqn{\hat r} (the definition used in HSMap 0.2.0 and
+#'     earlier) overstates phase support by a factor of at least about four.
 #' }
 #'
 #' @section Marker Selection and Presence Threshold:
@@ -221,7 +233,10 @@ cpp_pairwise_rf <- function(G_list,
 #'   \item \code{lod_r}: The LOD score comparing the likelihood of linkage at \eqn{\hat{r}}
 #'     versus no linkage (\eqn{r = 0.5}).
 #'     \deqn{ \mathrm{LOD}_r = \frac{\ell(\hat r) - \ell(0.5)}{\log(10)} }
-#'   \item \code{lod_ph}: The LOD score for the inferred maternal phase (coupling vs. repulsion).
+#'   \item \code{lod_ph}: The profiled LOD score for the inferred maternal phase
+#'     (coupling vs. repulsion), summed over dams; for a single family it equals
+#'     \code{lod_r} where a phase is called and is 0 (phase \code{NA}) at
+#'     \eqn{\hat r = 0.5} or at an exact tie.
 #'   \item \code{logLik}: The maximized log-likelihood value, \eqn{\ell(\hat r)}, for each pair.
 #'   \item \code{mom_phase_list}: A list of matrices (one per family) indicating the
 #'     inferred phase: \code{1} for coupling, \code{0} for repulsion, and

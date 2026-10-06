@@ -27,13 +27,13 @@ test_that("one-marker analytic q: homozygous-dam gamete counts give the closed-f
   q_of <- function(f) as.numeric(f$pi["AA", ] + 0.5 * f$pi["Aa", ])
 
   # lambda = 20, target q0 = 0.5  =>  alpha = beta = 10
-  f20 <- HSMap:::hmm_hs_cpp_parallel(G, M, ph, r_start = 0.05, pi_mode = "HWE",
+  f20 <- HalfSibMap:::hmm_hs_cpp_parallel(G, M, ph, r_start = 0.05, pi_mode = "HWE",
            pi_prior_in = hwe_cols(c(0.5, 0.5)), lambda = 20, epsilon = 0, tol = 1e-12,
            maxit = 500, paternal_mode = "HWE")
   expect_equal(q_of(f20), c((70 + 10)/(100 + 20), (40 + 10)/(100 + 20)), tolerance = 1e-9)
 
   # lambda = 0  =>  MLE = n_AA / n
-  f0 <- HSMap:::hmm_hs_cpp_parallel(G, M, ph, r_start = 0.05, pi_mode = "HWE",
+  f0 <- HalfSibMap:::hmm_hs_cpp_parallel(G, M, ph, r_start = 0.05, pi_mode = "HWE",
           pi_prior_in = hwe_cols(c(0.5, 0.5)), lambda = 0, epsilon = 0, tol = 1e-12,
           maxit = 500, paternal_mode = "HWE")
   expect_equal(q_of(f0), c(0.70, 0.40), tolerance = 1e-9)
@@ -52,7 +52,7 @@ test_that("engine q equals the coordinatewise maximizer of the penalized observe
   for (t in c(4L, 10L, 18L)) {
     f <- function(qt) {
       qv <- qhat; qv[t] <- qt
-      HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, rhat, hwe_cols(qv), 0.01) + pen1(qt)
+      HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, rhat, hwe_cols(qv), 0.01) + pen1(qt)
     }
     opt <- optimize(f, c(1e-4, 1 - 1e-4), maximum = TRUE, tol = 1e-10)
     expect_equal(opt$maximum, qhat[t], tolerance = 2e-3)
@@ -65,10 +65,10 @@ test_that("lambda=0 gametic fit matches the unregularized per_marker-induced q (
   # The observed likelihood depends on the paternal genotypes only through q, so
   # at lambda=0 the gametic (HWE) and free per_marker parameterizations must reach
   # the same identifiable q and the same shared r.
-  fh <- HSMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
+  fh <- HalfSibMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
           pi_prior_in = NULL, lambda = 0, epsilon = 0.01, tol = 1e-10, maxit = 4000,
           paternal_mode = "HWE")
-  fp <- HSMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "per_marker",
+  fp <- HalfSibMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "per_marker",
           pi_prior_in = NULL, lambda = 0, epsilon = 0.01, tol = 1e-10, maxit = 4000,
           paternal_mode = "per_marker")
   qh <- as.numeric(fh$pi["AA", ] + 0.5 * fh$pi["Aa", ])
@@ -94,11 +94,11 @@ test_that("penalized objective is non-decreasing across EM iterations", {
   d <- one_dam(9001L, Tm = 40L, n = 300L, pA = 0.10, err = 0.01)  # extreme pA => q moves a lot
   obj <- numeric(20)
   for (k in 1:20) {
-    f <- HSMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
+    f <- HalfSibMap:::hmm_hs_cpp_parallel(d$G, d$M, d$ph, r_start = 0.05, pi_mode = "HWE",
            pi_prior_in = NULL, lambda = lam, epsilon = 0.01, tol = 0, maxit = k,  # tol=0 => exactly k iters
            paternal_mode = "HWE")
     q <- as.numeric(f$pi["AA", ] + 0.5 * f$pi["Aa", ])
-    obj[k] <- HSMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(f$r), hwe_cols(q), 0.01) +
+    obj[k] <- HalfSibMap:::loglik_hs_cpp(d$G, d$M, d$ph, as.numeric(f$r), hwe_cols(q), 0.01) +
               pen_q(q, lam, q0)
   }
   expect_true(all(diff(obj) >= -1e-6))

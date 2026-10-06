@@ -48,7 +48,7 @@ test_that("joint multi-dam returns a shared map usable downstream", {
   expect_equal(length(m$dams), 3L)
 
   # downstream consumer: cumulative cM positions, one per marker, monotone
-  pos <- HSMap:::get_map(m, map.function = "haldane")
+  pos <- HalfSibMap:::get_map(m, map.function = "haldane")
   expect_length(pos, Tm)
   expect_true(all(diff(pos) >= 0))
 

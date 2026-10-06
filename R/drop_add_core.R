@@ -1,4 +1,4 @@
-#' Remove SNPs that create large adjacent gaps in an HSMap map
+#' Remove SNPs that create large adjacent gaps in a HalfSibMap map
 #'
 #' Detect adjacent intervals whose Haldane distance exceeds a threshold
 #' and remove either one marker per gap, or entire small clusters between
